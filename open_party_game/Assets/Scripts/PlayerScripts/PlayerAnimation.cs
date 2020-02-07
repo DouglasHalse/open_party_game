@@ -77,6 +77,7 @@ public class PlayerAnimation : MonoBehaviour
         //End condition, no more steps in animation
         if(t>=1f && steps_remaining == 0)
         {
+            actor.GetComponent<PlayerInfo>().interact_with_platform();
             this.enabled = false;
 
         }

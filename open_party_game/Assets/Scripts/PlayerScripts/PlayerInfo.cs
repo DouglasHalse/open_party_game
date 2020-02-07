@@ -10,6 +10,23 @@ public class PlayerInfo : MonoBehaviour
     private int moves_left;
     private int player_id;
     private GameObject body;
+    public void interact_with_platform()
+    {
+        PlatformScript current_platform = GameObject.FindGameObjectWithTag("GameController").GetComponent<MainWorldScript>().find_current_platform(this.gameObject).GetComponent<PlatformScript>();
+        if(current_platform.gives_coins)
+        {
+            this.give_coins(200);
+        }
+        else if(current_platform.has_minigame)
+        {
+            Debug.Log("Minigame launching...");
+            //Launch minigame!
+        }
+        else if(current_platform.has_store)
+        {
+            Debug.Log("Interacting with store...");
+        }
+    }
     public void setup_player(string player_name, int player_id)
     {
         this.player_name = player_name;
@@ -21,6 +38,10 @@ public class PlayerInfo : MonoBehaviour
     public int get_coins()
     {
         return this.coins;
+    }
+    public void give_coins(int coins)
+    {
+        this.coins += coins;
     }
     public int get_moves_left()
     {

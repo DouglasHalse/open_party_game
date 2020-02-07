@@ -10,6 +10,7 @@ public class MainWorldScript : MonoBehaviour
     public GameObject player_model;
     private GameObject[] platforms;
     private Text debug_text;
+    private GameObject cam;
     public bool debug;
     public bool is_idle()
     {
@@ -92,7 +93,7 @@ public class MainWorldScript : MonoBehaviour
             return null;
         }
     }
-    private GameObject find_current_platform(GameObject actor)
+    public GameObject find_current_platform(GameObject actor)
     {
         GameObject closest_platform = null;
         float minDist = Mathf.Infinity;
@@ -125,7 +126,7 @@ public class MainWorldScript : MonoBehaviour
     void Start()
     {
         //setups for debug information for on-screen overlay
-        GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
+        cam = GameObject.FindGameObjectWithTag("MainCamera");
         debug_text = cam.GetComponentInChildren<Text>();
 
         //finds all platforms in scene, used by functions
@@ -142,8 +143,8 @@ public class MainWorldScript : MonoBehaviour
         player1.GetComponent<PlayerInfo>().setup_player("Player 1", 0);
 
         //Creates player 2 and puts it on position 0 on second platform
-        //GameObject player2 = GameObject.Instantiate(player_model, get_position_from_platform(find_first_platform().GetComponent<PlatformScript>().next_platform)[0], Quaternion.identity);
-        //player2.GetComponent<PlayerInfo>().setup_player("Player 2");
+        GameObject player2 = Instantiate(player_model, starting_positions[3], Quaternion.identity);
+        player2.GetComponent<PlayerInfo>().setup_player("Player 2", 1);
 
         //Adds all players to global player list
         add_players_to_list();
@@ -164,10 +165,12 @@ public class MainWorldScript : MonoBehaviour
 
             if(Input.GetMouseButtonDown(0))
             {
-                move_player_nr_steps(player_list[0], 1);
+                move_player_nr_steps(player_list[0], 6);
             }
         }
-
+        //Temporary camera controller, Will be dedicated script later.
+        var target_rotation = Quaternion.LookRotation(player_list[0].transform.position - cam.transform.position);
+        cam.transform.rotation = Quaternion.Slerp(cam.transform.rotation, target_rotation, 2 * Time.deltaTime);
         //Print debug information on-screen
         print_debug_info();
     }

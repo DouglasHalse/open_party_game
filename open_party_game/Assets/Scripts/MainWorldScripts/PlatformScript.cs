@@ -8,6 +8,9 @@ public class PlatformScript : MonoBehaviour
     public GameObject[] platforms;
     public bool is_goal;
     public bool is_start;
+    public bool gives_coins;
+    public bool has_minigame;
+    public bool has_store;
 
     //Add information about the type of platform
 
