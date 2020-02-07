@@ -13,6 +13,7 @@ public class MainWorldScript : MonoBehaviour
     public bool debug;
     public bool is_idle()
     {
+        //Only takes into account if an animation is running, Add scripts that needs to be ran without player-interuption in the if-statement 
         foreach(GameObject player in player_list)
         {
             if(player.GetComponent<PlayerAnimation>().enabled)
@@ -41,7 +42,8 @@ public class MainWorldScript : MonoBehaviour
 
             }
             debug_text.text = "Debug information: \n" +
-                "Number of players: " + player_list.Count + "\n\n" +
+                "Number of players: " + player_list.Count + "\n" +
+                "Scene is idle: " + is_idle() + "\n\n" + 
                 player_info() + "\n";
         }
         else
@@ -63,7 +65,7 @@ public class MainWorldScript : MonoBehaviour
         GameObject[] postions_platforms = platform.GetComponent<PlatformScript>().platforms;
         for(int i = 0; i<postions_platforms.Length;i++)
         {
-            temp[i] = postions_platforms[i].transform.position;
+            temp[i] = postions_platforms[i].transform.position + Vector3.up*player_model.transform.lossyScale.y; //positions + model offset
         }
         return temp;
 
@@ -115,15 +117,29 @@ public class MainWorldScript : MonoBehaviour
         GameObject next_platform = current_platform.GetComponent<PlatformScript>().next_platform;
         return next_platform.GetComponent<PlatformScript>().platforms[actor_id].transform.position;
     }
+    private void move_player_nr_steps(GameObject player, int nr_steps)
+    {
+        Debug.Log("Player " + player.GetComponent<PlayerInfo>().get_player_id() + " is moving " + nr_steps + " space(s)");
+        player.GetComponent<PlayerAnimation>().move_nr_steps(nr_steps);
+    }
     void Start()
     {
+        //setups for debug information for on-screen overlay
         GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
         debug_text = cam.GetComponentInChildren<Text>();
+
+        //finds all platforms in scene, used by functions
         platforms = GameObject.FindGameObjectsWithTag("Platform");
 
+        //Find the 4 starting positions
+        Vector3[] starting_positions = get_position_from_platform(find_first_platform());
+
+
+
+
         //Creates player 1 and puts it on position 0 on starting platform
-        GameObject player1 = Instantiate(player_model, get_position_from_platform(find_first_platform())[0], Quaternion.identity);
-        player1.GetComponent<PlayerInfo>().setup_player("Player 1");
+        GameObject player1 = Instantiate(player_model, starting_positions[0], Quaternion.identity);
+        player1.GetComponent<PlayerInfo>().setup_player("Player 1", 0);
 
         //Creates player 2 and puts it on position 0 on second platform
         //GameObject player2 = GameObject.Instantiate(player_model, get_position_from_platform(find_first_platform().GetComponent<PlatformScript>().next_platform)[0], Quaternion.identity);
@@ -133,19 +149,26 @@ public class MainWorldScript : MonoBehaviour
         add_players_to_list();
     }
 
+    //-----------TODO------------
+    // Add dynamically the correct number of players as selected from main menu
+    // Create turn-system to give control to each player as there turn comes around
+    // 
+
     // Update is called once per frame
     void Update()
     {
-        print_debug_info();
+        
+        //This if loop is ran when the game is waiting for an input
         if(is_idle())
         {
 
             if(Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Button pressed!");
-                player_list[0].GetComponent<PlayerAnimation>().jump_to(get_next_point(player_list[0], 0));
+                move_player_nr_steps(player_list[0], 1);
             }
         }
-        
+
+        //Print debug information on-screen
+        print_debug_info();
     }
 }

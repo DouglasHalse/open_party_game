@@ -8,6 +8,9 @@ public class PlatformScript : MonoBehaviour
     public GameObject[] platforms;
     public bool is_goal;
     public bool is_start;
+
+    //Add information about the type of platform
+
     // Start is called before the first frame update
     void Start()
     {
