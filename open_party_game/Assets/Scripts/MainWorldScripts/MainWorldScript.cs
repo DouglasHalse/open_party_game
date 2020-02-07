@@ -11,6 +11,17 @@ public class MainWorldScript : MonoBehaviour
     private GameObject[] platforms;
     private Text debug_text;
     public bool debug;
+    public bool is_idle()
+    {
+        foreach(GameObject player in player_list)
+        {
+            if(player.GetComponent<PlayerAnimation>().enabled)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     private void print_debug_info()
     {
         if(debug)
@@ -79,6 +90,31 @@ public class MainWorldScript : MonoBehaviour
             return null;
         }
     }
+    private GameObject find_current_platform(GameObject actor)
+    {
+        GameObject closest_platform = null;
+        float minDist = Mathf.Infinity;
+        foreach (GameObject platform in platforms)
+        {
+            float dist = Vector3.Distance(platform.transform.position, actor.transform.position);
+            if(dist<minDist)
+            {
+                minDist = dist;
+                closest_platform = platform;
+            }
+        }
+        if(closest_platform == null)
+        {
+            Debug.Log("Current platform not found!");
+        }
+        return closest_platform;
+    }
+    private Vector3 get_next_point(GameObject actor, int actor_id)
+    {
+        GameObject current_platform = find_current_platform(actor);
+        GameObject next_platform = current_platform.GetComponent<PlatformScript>().next_platform;
+        return next_platform.GetComponent<PlatformScript>().platforms[actor_id].transform.position;
+    }
     void Start()
     {
         GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
@@ -90,8 +126,8 @@ public class MainWorldScript : MonoBehaviour
         player1.GetComponent<PlayerInfo>().setup_player("Player 1");
 
         //Creates player 2 and puts it on position 0 on second platform
-        GameObject player2 = GameObject.Instantiate(player_model, get_position_from_platform(find_first_platform().GetComponent<PlatformScript>().next_platform)[0], Quaternion.identity);
-        player2.GetComponent<PlayerInfo>().setup_player("Player 2");
+        //GameObject player2 = GameObject.Instantiate(player_model, get_position_from_platform(find_first_platform().GetComponent<PlatformScript>().next_platform)[0], Quaternion.identity);
+        //player2.GetComponent<PlayerInfo>().setup_player("Player 2");
 
         //Adds all players to global player list
         add_players_to_list();
@@ -101,7 +137,15 @@ public class MainWorldScript : MonoBehaviour
     void Update()
     {
         print_debug_info();
+        if(is_idle())
+        {
 
+            if(Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Button pressed!");
+                player_list[0].GetComponent<PlayerAnimation>().jump_to(get_next_point(player_list[0], 0));
+            }
+        }
         
     }
 }
