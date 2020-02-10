@@ -58,9 +58,12 @@ public class PlayerAnimation : MonoBehaviour
     }
     public void move_nr_steps(int steps)
     {
+        if(steps != 0)
+        {
+            steps_remaining = steps;
+            move_one_step();
+        }
         
-        steps_remaining = steps;
-        move_one_step();
     }
     // Start is called before the first frame update
     void Start()

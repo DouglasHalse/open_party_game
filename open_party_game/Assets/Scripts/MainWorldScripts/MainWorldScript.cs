@@ -17,7 +17,7 @@ public class MainWorldScript : MonoBehaviour
         //Only takes into account if an animation is running, Add scripts that needs to be ran without player-interuption in the if-statement 
         foreach(GameObject player in player_list)
         {
-            if(player.GetComponent<PlayerAnimation>().enabled)
+            if(player.GetComponent<PlayerAnimation>().enabled || GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MainWorldCameraController>().is_moving())
             {
                 return false;
             }
@@ -44,6 +44,7 @@ public class MainWorldScript : MonoBehaviour
             }
             debug_text.text = "Debug information: \n" +
                 "Number of players: " + player_list.Count + "\n" +
+                "Main Camera is moving: " + cam.GetComponent<MainWorldCameraController>().is_moving() + "\n" + 
                 "Scene is idle: " + is_idle() + "\n\n" + 
                 player_info() + "\n";
         }
@@ -120,8 +121,24 @@ public class MainWorldScript : MonoBehaviour
     }
     private void move_player_nr_steps(GameObject player, int nr_steps)
     {
+        if(nr_steps > steps_to_goal(player))
+        {
+            Debug.Log("Nr. steps more than steps to finish, steps set to: " + steps_to_goal(player));
+            nr_steps = steps_to_goal(player);
+        }
         Debug.Log("Player " + player.GetComponent<PlayerInfo>().get_player_id() + " is moving " + nr_steps + " space(s)");
         player.GetComponent<PlayerAnimation>().move_nr_steps(nr_steps);
+    }
+    private int steps_to_goal(GameObject player)
+    {
+        GameObject current_platform = find_current_platform(player);
+        int count = 0;
+        while(!current_platform.GetComponent<PlatformScript>().is_goal)
+        {
+            current_platform = current_platform.GetComponent<PlatformScript>().next_platform;
+            count++;
+        }
+        return count;
     }
     void Start()
     {
@@ -167,10 +184,9 @@ public class MainWorldScript : MonoBehaviour
             {
                 move_player_nr_steps(player_list[0], 6);
             }
+
         }
-        //Temporary camera controller, Will be dedicated script later.
-        var target_rotation = Quaternion.LookRotation(player_list[0].transform.position - cam.transform.position);
-        cam.transform.rotation = Quaternion.Slerp(cam.transform.rotation, target_rotation, 2 * Time.deltaTime);
+        
         //Print debug information on-screen
         print_debug_info();
     }
