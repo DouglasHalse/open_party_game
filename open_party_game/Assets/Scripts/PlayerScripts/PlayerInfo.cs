@@ -7,6 +7,8 @@ public class PlayerInfo : MonoBehaviour
 
     private string player_name;
     private int coins;
+    private int minigame_health;
+    private bool dead = false;
     private int moves_left;
     private int player_id;
     private GameObject body;
@@ -34,6 +36,30 @@ public class PlayerInfo : MonoBehaviour
         this.moves_left = 0;
         this.player_id = player_id;
         this.body = this.gameObject;
+    }
+    public bool is_alive_minigame()
+    {
+        return !dead;
+    }
+    public void give_minigame_damage(int damage)
+    {
+        if (damage >= this.minigame_health)
+        {
+            this.minigame_health = 0;
+            this.dead = true;
+        }
+        else
+        {
+            this.minigame_health -= damage;
+        }
+    }
+    public void set_minigame_health(int health)
+    {
+        this.minigame_health = health;
+    }
+    public int get_minigame_health()
+    {
+        return this.minigame_health;
     }
     public int get_coins()
     {

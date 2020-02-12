@@ -10,14 +10,28 @@ public class TurretScript : MonoBehaviour
     private GameObject rotater;
     private GameObject barrel;
     private GameObject current_target;
-    
+    private float projectile_speed = 10f;
+    private float projectile_turning_speed = 20f;
+    private float projectile_self_destruct_time = 5f;
+    public void set_projectile_speed(float speed)
+    {
+        this.projectile_speed = speed;
+    }
+    public void set_projectile_turning_speed(float turning_speed)
+    {
+        this.projectile_turning_speed = turning_speed;
+    }
+    public void set_projectile_self_destruct_time(float time)
+    {
+        this.projectile_self_destruct_time = time;
+    }
     public GameObject get_current_target()
     {
         return current_target;
     }
     private Quaternion get_direction()
     {
-        Vector3 player_pos = current_target.transform.position;
+        Vector3 player_pos = current_target.transform.position - this.transform.position;
         player_pos.y = 0;
         Quaternion dir = Quaternion.LookRotation(player_pos, Vector3.up);
         
@@ -27,15 +41,17 @@ public class TurretScript : MonoBehaviour
     {
         this.current_target = target;
     }
-
+    public void set_target_and_run(GameObject target)
+    {
+        set_target(target);
+        //this.enabled = true;
+    }
     public void fire_turret()
     {
-        //Vector3 fire_dir = (current_target.transform.position - barrel.transform.position).normalized;
-        Vector3 direction = barrel.transform.up;
-        Quaternion rot = Quaternion.LookRotation(direction, Vector3.up);
-        rot.SetEulerAngles(90 * Mathf.Deg2Rad, Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y * Mathf.Deg2Rad, 0);
-        GameObject bullet = Instantiate(projectile, barrel.transform.position + barrel.transform.up, rot);
-        bullet.GetComponent<BulletScript>().setup_and_shoot(current_target, 10f, 20f, 5f);
+        Vector3 direction = this.barrel.transform.up;
+        Quaternion rot = Quaternion.Euler(90, Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y, 0);
+        GameObject bullet = Instantiate(projectile, this.barrel.transform.position + this.barrel.transform.up, rot);
+        bullet.GetComponent<BulletScript>().setup_and_shoot(current_target, projectile_speed, projectile_turning_speed, projectile_self_destruct_time);
 
     }
     void Start()
@@ -43,17 +59,12 @@ public class TurretScript : MonoBehaviour
         players = GameObject.FindGameObjectsWithTag("Player");
         rotater = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
         barrel = this.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
-        current_target = players[0];
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            fire_turret();
-        }
-        rotater.transform.rotation = get_direction();
+        rotater.transform.rotation = Quaternion.Slerp(rotater.transform.rotation, get_direction(), 2f * Time.deltaTime);
     }
 }

@@ -28,17 +28,30 @@ public class BulletScript : MonoBehaviour
     {
         this.rotating_speed = rotating_speed;
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        //Debug.Log(collision.)
+        if(collision.gameObject.tag == "Player")
+        {
+            collision.gameObject.GetComponent<PlayerInfo>().give_minigame_damage(1);
+            Destroy(this.gameObject);
+        }
+        else if(collision.gameObject.tag == "projectile")
+        {
+            Destroy(this.gameObject);
+        }
+    }
     private Quaternion look_at_target()
     {
         Vector3 direction = (target.transform.position - this.transform.position).normalized;
-        Quaternion rot = Quaternion.LookRotation(direction, Vector3.up);
-        rot.SetEulerAngles(90*Mathf.Deg2Rad, Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y * Mathf.Deg2Rad, 0);
+        Quaternion rot = Quaternion.Euler(90, Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y, 0);
         return rot;
     }
     private void move_forward()
     {
         Vector3 frw_dir = this.gameObject.transform.up.normalized;
-        this.transform.position += frw_dir * Time.deltaTime * speed;
+        this.transform.Translate(frw_dir * Time.deltaTime * speed, Space.World);
+        //this.transform.position += frw_dir * Time.deltaTime * speed;
     }
     private void rotate_toward_target()
     {
@@ -48,7 +61,6 @@ public class BulletScript : MonoBehaviour
     void Start()
     {
         Destroy(this.gameObject, self_destruct_time);
-        //Destroy(this, 1f);
     }
 
     // Update is called once per frame
