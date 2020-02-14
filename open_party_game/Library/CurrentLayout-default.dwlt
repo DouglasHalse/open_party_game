@@ -115,7 +115,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 67
+  controlID: 61
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 68
+  controlID: 62
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 69
+  controlID: 63
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -265,8 +265,8 @@ MonoBehaviour:
     y: 0
     width: 549
     height: 947
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -352,8 +352,8 @@ MonoBehaviour:
     vZoomLockedByDefault: 0
     m_HBaseRangeMin: -556
     m_HBaseRangeMax: 556
-    m_VBaseRangeMin: -326
-    m_VBaseRangeMax: 326
+    m_VBaseRangeMin: -315.5
+    m_VBaseRangeMax: 315.5
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -370,11 +370,11 @@ MonoBehaviour:
     m_DrawArea:
       serializedVersion: 2
       x: 0
-      y: 0
+      y: 21
       width: 1112
-      height: 652
+      height: 631
     m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 556, y: 326}
+    m_Translation: {x: 556, y: 315.5}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
@@ -382,9 +382,9 @@ MonoBehaviour:
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
       x: -556
-      y: -326
+      y: -315.5
       width: 1112
-      height: 652
+      height: 631
     m_MinimalGUI: 1
   m_defaultScale: 1
   m_LastWindowPixelSize: {x: 1112, y: 652}
@@ -424,7 +424,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 72fbffff
+      m_ExpandedIDs: 1cfbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.338706, y: 0.116187535, z: -0.04226752, w: 0.93279684}
     speed: 2
-    m_Value: {x: -0.338706, y: -0.11618753, z: 0.04226752, w: -0.93279684}
+    m_Value: {x: 0.33868605, y: 0.116180696, z: -0.04226503, w: 0.9327419}
   m_Size:
     m_Target: 33.95819
     speed: 2
@@ -602,20 +602,20 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Prefabs/Minigames/BulletDodge
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Prefabs/Minigames/BulletDodge
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\4head\Documents\open_party_game\open_party_game\open_party_game\open_party_game
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 60340000
-    m_LastClickedID: 13408
-    m_ExpandedIDs: 000000005a3400005c3400005e34000060340000623400006434000000ca9a3b
+    m_SelectedIDs: 9c340000
+    m_LastClickedID: 13468
+    m_ExpandedIDs: 00000000883400008a3400008c3400008e34000090340000923400009a34000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -643,7 +643,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000005a3400005c3400005e340000603400006234000064340000
+    m_ExpandedIDs: 00000000883400008a3400008c3400008e3400009034000092340000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

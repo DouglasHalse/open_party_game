@@ -44,6 +44,11 @@ public class BulletDodgeGameScript : MonoBehaviour
         player.GetComponent<wasdPlayerController>().cam = GameObject.FindGameObjectWithTag("MainCamera");
         player.GetComponent<wasdPlayerController>().actor = player.gameObject;
     }
+
+    private void setup_player(string name, int ID, int player_comtroller)
+    {
+        
+    }
     // Start is called before the first frame update
     void Start()
     {
