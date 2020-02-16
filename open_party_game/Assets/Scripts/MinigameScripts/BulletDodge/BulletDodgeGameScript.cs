@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class BulletDodgeGameScript : MonoBehaviour
 {
-    public GameObject[] players;
     public GameObject[] cannons;
     public GameObject player_model;
     public bool debug;
@@ -18,7 +17,7 @@ public class BulletDodgeGameScript : MonoBehaviour
             string player_info()
             {
                 var temp = new System.Text.StringBuilder();
-                foreach (GameObject player in players)
+                foreach (GameObject player in GlobalGameVariables.Instance.get_player_list())
                 {
                     PlayerInfo temp_player_info = player.GetComponent<PlayerInfo>();
                     temp.Append("Player: " + temp_player_info.get_player_name() + "\n" +
@@ -30,7 +29,7 @@ public class BulletDodgeGameScript : MonoBehaviour
 
             }
             debug_text.text = "Debug information: \n" +
-                "Number of players: " + players.Length + "\n\n" +
+                "Number of players: " + GlobalGameVariables.Instance.get_nr_of_players() + "\n\n" +
                 player_info() + "\n";
         }
         else
@@ -44,10 +43,23 @@ public class BulletDodgeGameScript : MonoBehaviour
         player.GetComponent<wasdPlayerController>().cam = GameObject.FindGameObjectWithTag("MainCamera");
         player.GetComponent<wasdPlayerController>().actor = player.gameObject;
     }
-
-    private void setup_player(string name, int ID, int player_comtroller)
+    private void put_playes_on_starting_platform(GameObject[] starting_platform)
     {
-        
+        int id = 0;
+        foreach (GameObject player in GlobalGameVariables.Instance.get_player_list())
+        {
+            Vector3 start_pos = starting_platform[id].transform.position;
+            player.transform.position = start_pos;
+            id++;
+        }
+    }
+
+    private void setup_players()
+    {
+        foreach(GameObject player in GlobalGameVariables.Instance.get_player_list())
+        {
+            player.GetComponent<PlayerInfo>().set_minigame_health(10);
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -57,18 +69,16 @@ public class BulletDodgeGameScript : MonoBehaviour
         //Setup spawn locations
         GameObject[] spawn_platforms = GameObject.FindGameObjectsWithTag("Platform");
 
-        //Spawn player 1 with appropriate settings and give it wasd controlls
-        GameObject player1 = Instantiate(player_model, spawn_platforms[0].transform.position, Quaternion.identity);
-        player1.GetComponent<PlayerInfo>().setup_player("Player 1", 0);
-        player1.GetComponent<PlayerInfo>().set_minigame_health(10);
-        give_player_wasd_controlls(player1);
+        put_playes_on_starting_platform(spawn_platforms);
+        setup_players();
+
+        give_player_wasd_controlls(GlobalGameVariables.Instance.get_player_list()[0]);
         
-        players = GameObject.FindGameObjectsWithTag("Player");
         cannons = GameObject.FindGameObjectsWithTag("turret");
         //setup all cannons and target player1
         foreach(GameObject cannon in cannons)
         {
-            cannon.GetComponent<TurretScript>().set_target_and_run(player1);
+            cannon.GetComponent<TurretScript>().set_target_and_run(GlobalGameVariables.Instance.get_player_list()[0]);
             cannon.GetComponent<TurretScript>().set_projectile_speed(20f);
         }
         

@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Intro/MainMenu.unity
+    guid: b210df20b79997f4ebb2b4d173d8b4f0
+  - enabled: 1
+    path: Assets/Scenes/MainWorld/MainWorld.unity
+    guid: f68b12b084b71a14db9c04ac3fbecee9
+  - enabled: 1
+    path: Assets/Scenes/MiniGames/BulletDodge/BulletDodge.unity
+    guid: adf6e305b09277d44a8dbbd3f49712ca
   m_configObjects: {}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerInfo : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class PlayerInfo : MonoBehaviour
         else if(current_platform.has_minigame)
         {
             Debug.Log("Minigame launching...");
+            SceneManager.LoadScene("BulletDodge");
             //Launch minigame!
         }
         else if(current_platform.has_store)
@@ -29,14 +31,16 @@ public class PlayerInfo : MonoBehaviour
             Debug.Log("Interacting with store...");
         }
     }
-    public void setup_player(string player_name, int player_id)
+    public void setup_player(string player_name, int player_id, GameObject body)
     {
         this.player_name = player_name;
         this.coins = 0;
         this.moves_left = 0;
         this.player_id = player_id;
-        this.body = this.gameObject;
+        this.body = body;
     }
+
+    
     public bool is_alive_minigame()
     {
         return !dead;

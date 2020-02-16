@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/MiniGames/BulletDodge/BulletDodge.unity
+- path: Assets/Scenes/Intro/MainMenu.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

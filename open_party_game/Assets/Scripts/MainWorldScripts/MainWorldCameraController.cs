@@ -5,7 +5,6 @@ using UnityEngine;
 public class MainWorldCameraController : MonoBehaviour
 {
     public GameObject cam;
-    public GameObject[] players;
     private GameObject[] cam_pos;
     private GameObject current_player;
     private GameObject current_cam_pos;
@@ -47,9 +46,7 @@ public class MainWorldCameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //players = GameObject.FindGameObjectsWithTag("Player");
         cam_pos = GameObject.FindGameObjectsWithTag("CamPos");
-        //current_player = players[0];
         current_cam_pos = cam_pos[0];
         moving = false;
     }
@@ -57,12 +54,6 @@ public class MainWorldCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(players.Length == 0)
-        {
-            players = GameObject.FindGameObjectsWithTag("Player");
-            current_player = players[0];
-        }
-
         //New position found
         if(current_cam_pos != find_closest_cam_pos(current_player) && !moving)
         {

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class MainWorldScript : MonoBehaviour
 {
     // Start is called before the first frame update
-    public List<GameObject> player_list = new List<GameObject>();
     public GameObject player_model;
     private GameObject[] platforms;
     private Text debug_text;
@@ -15,7 +14,7 @@ public class MainWorldScript : MonoBehaviour
     public bool is_idle()
     {
         //Only takes into account if an animation is running, Add scripts that needs to be ran without player-interuption in the if-statement 
-        foreach(GameObject player in player_list)
+        foreach(GameObject player in GlobalGameVariables.Instance.get_player_list())
         {
             if(player.GetComponent<PlayerAnimation>().enabled || GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MainWorldCameraController>().is_moving())
             {
@@ -31,7 +30,7 @@ public class MainWorldScript : MonoBehaviour
             string player_info()
             {
                 var temp = new System.Text.StringBuilder();
-                foreach(GameObject player in player_list)
+                foreach(GameObject player in GlobalGameVariables.Instance.get_player_list())
                 {
                     PlayerInfo temp_player_info = player.GetComponent<PlayerInfo>();
                     temp.Append("Player: " + temp_player_info.get_player_name() + "\n" +
@@ -43,7 +42,7 @@ public class MainWorldScript : MonoBehaviour
 
             }
             debug_text.text = "Debug information: \n" +
-                "Number of players: " + player_list.Count + "\n" +
+                "Number of players: " + GlobalGameVariables.Instance.get_player_list().Count + "\n" +
                 "Main Camera is moving: " + cam.GetComponent<MainWorldCameraController>().is_moving() + "\n" + 
                 "Scene is idle: " + is_idle() + "\n\n" + 
                 player_info() + "\n";
@@ -51,14 +50,6 @@ public class MainWorldScript : MonoBehaviour
         else
         {
             debug_text.text = "";
-        }
-    }
-    private void add_players_to_list()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < players.Length; i++)
-        {
-            player_list.Add(players[i]);
         }
     }
     private Vector3[] get_position_from_platform(GameObject platform)
@@ -140,6 +131,15 @@ public class MainWorldScript : MonoBehaviour
         }
         return count;
     }
+    private void put_playes_on_starting_platform(Vector3[] starting_positions)
+    {
+        int id = 0;
+        foreach(GameObject player in GlobalGameVariables.Instance.get_player_list())
+        {
+            player.transform.position = starting_positions[id];
+            id++;
+        }
+    }
     void Start()
     {
         //setups for debug information for on-screen overlay
@@ -152,24 +152,15 @@ public class MainWorldScript : MonoBehaviour
         //Find the 4 starting positions
         Vector3[] starting_positions = get_position_from_platform(find_first_platform());
 
+        put_playes_on_starting_platform(starting_positions);
 
-
-
-        //Creates player 1 and puts it on position 0 on starting platform
-        GameObject player1 = Instantiate(player_model, starting_positions[0], Quaternion.identity);
-        player1.GetComponent<PlayerInfo>().setup_player("Player 1", 0);
-
-        //Creates player 2 and puts it on position 0 on second platform
-        GameObject player2 = Instantiate(player_model, starting_positions[3], Quaternion.identity);
-        player2.GetComponent<PlayerInfo>().setup_player("Player 2", 1);
-
-        //Adds all players to global player list
-        add_players_to_list();
+        cam.GetComponent<MainWorldCameraController>().set_current_player(GlobalGameVariables.Instance.get_player_list()[0]);
+        
     }
 
     //-----------TODO------------
-    // Add dynamically the correct number of players as selected from main menu
-    // Create turn-system to give control to each player as there turn comes around
+    // Add dynamically the correct number of players as selected from main menu DONE
+    // Create turn-system to give control to each player as there turn comes around, make sure to set_current player in camera controls
     // 
 
     // Update is called once per frame
@@ -182,7 +173,7 @@ public class MainWorldScript : MonoBehaviour
 
             if(Input.GetMouseButtonDown(0))
             {
-                move_player_nr_steps(player_list[0], 6);
+                move_player_nr_steps(GlobalGameVariables.Instance.get_player_list()[0], 3);
             }
 
         }
