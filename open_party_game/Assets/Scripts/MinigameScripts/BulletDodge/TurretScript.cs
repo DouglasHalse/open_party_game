@@ -13,6 +13,9 @@ public class TurretScript : MonoBehaviour
     private float projectile_speed = 10f;
     private float projectile_turning_speed = 20f;
     private float projectile_self_destruct_time = 5f;
+    private bool firing = false;
+    private float fire_rate = 2f;
+    private float t = 0f;
     public void set_projectile_speed(float speed)
     {
         this.projectile_speed = speed;
@@ -46,6 +49,22 @@ public class TurretScript : MonoBehaviour
         set_target(target);
         //this.enabled = true;
     }
+    public void toggle_firing()
+    {
+        this.firing = true;
+    }
+    public void set_fire_rate(float fire_rate)
+    {
+        this.fire_rate = fire_rate;
+    }
+    public float get_fire_rate()
+    {
+        return this.fire_rate;
+    }
+    public float get_t()
+    {
+        return t;
+    }
     public void fire_turret()
     {
         Vector3 direction = this.barrel.transform.up;
@@ -65,6 +84,20 @@ public class TurretScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rotater.transform.rotation = Quaternion.Slerp(rotater.transform.rotation, get_direction(), 2f * Time.deltaTime);
+        if(current_target)
+        {
+            rotater.transform.rotation = Quaternion.Slerp(rotater.transform.rotation, get_direction(), 2f * Time.deltaTime);
+        }
+        if(firing)
+        {
+            if(t>fire_rate)
+            {
+                fire_turret();
+                t = 0;
+            }
+            t += Time.deltaTime;
+        }
+
+        
     }
 }

@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -293, y: 50}
-  m_SizeDelta: {x: 500, y: 500}
+  m_AnchoredPosition: {x: -293, y: 0}
+  m_SizeDelta: {x: 500, y: 610}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6808890173614104645
 CanvasRenderer:
@@ -274,5 +274,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 6808890173877447031}
-  players: []
-  cam_pos: []

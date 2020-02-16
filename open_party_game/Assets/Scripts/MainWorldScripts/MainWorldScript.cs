@@ -133,12 +133,21 @@ public class MainWorldScript : MonoBehaviour
     }
     private void put_playes_on_starting_platform(Vector3[] starting_positions)
     {
-        int id = 0;
-        foreach(GameObject player in GlobalGameVariables.Instance.get_player_list())
+        if(GlobalGameVariables.Instance.get_nr_of_players() != 0)
         {
-            player.transform.position = starting_positions[id];
-            id++;
+            int id = 0;
+            foreach (GameObject player in GlobalGameVariables.Instance.get_player_list())
+            {
+                player.transform.position = starting_positions[id];
+                id++;
+            }
         }
+        else
+        {
+            Debug.LogWarning("No players found in GlobalGameVariables, Creating debug-player...");
+            GlobalGameVariables.Instance.add_player("debug-player", 0, player_model, starting_positions[0]);
+        }
+        
     }
     void Start()
     {
