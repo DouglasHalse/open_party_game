@@ -12,6 +12,8 @@ public class PlayerInfo : MonoBehaviour
     private bool dead = false;
     private int moves_left;
     private int player_id;
+    
+
     private GameObject body;
     public void interact_with_platform()
     {
@@ -39,8 +41,11 @@ public class PlayerInfo : MonoBehaviour
         this.player_id = player_id;
         this.body = body;
     }
-
     
+    public GameObject get_body()
+    {
+        return this.body;
+    }
     public bool is_alive_minigame()
     {
         return !dead;
@@ -99,6 +104,6 @@ public class PlayerInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

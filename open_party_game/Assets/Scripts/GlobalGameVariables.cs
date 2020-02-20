@@ -19,7 +19,11 @@ public class GlobalGameVariables : Singleton<GlobalGameVariables>
     public void add_player(string name, int id, GameObject body, Vector3 position)
     {
         //PlayerInfo player = GetComponent<PlayerInfo>();
-        GameObject player = Instantiate(body, position, Quaternion.identity);
+        //GameObject player = Instantiate(body, position, Quaternion.identity);
+        GameObject player = Instantiate(body) as GameObject;
+        player.transform.position = position;
+        player.transform.rotation = Quaternion.identity;
+        player.transform.Translate(Vector3.zero);
         DontDestroyOnLoad(player);
         player.GetComponent<PlayerInfo>().setup_player(name, id, body);
         player_list.Add(player);
